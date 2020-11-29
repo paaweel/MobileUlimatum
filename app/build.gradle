@@ -44,7 +44,15 @@ dependencies {
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-sceneform.asset('sampledata/skeletal/58_Movement_LODa_r01.fbx', // 'Source Asset Path' specified during import.
+
+// test skeleton
+//sceneform.asset('sampledata/skeletal/58_Movement_LODa_r01.fbx', // 'Source Asset Path' specified during import.
+//        'default',                    // 'Material Path' specified during import.
+//        'sampledata/skeletal/58_Movement_LODa_r01.sfa', // '.sfa Output Path' specified during import.
+//        'src/main/res/raw/raw')      // '.sfb Output Path' specified during import.
+
+// pepper
+sceneform.asset('sampledata/pepper/demo.fbx', // 'Source Asset Path' specified during import.
         'default',                    // 'Material Path' specified during import.
-        'sampledata/skeletal/58_Movement_LODa_r01.sfa', // '.sfa Output Path' specified during import.
+        'sampledata/pepper/demo.sfa', // '.sfa Output Path' specified during import.
         'src/main/res/raw/raw')      // '.sfb Output Path' specified during import.
