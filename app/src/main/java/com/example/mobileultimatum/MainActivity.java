@@ -26,6 +26,8 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     private ModelAnimator modelAnimator;
     private int i = 0;
+    private PepperSpeech pepperSpeech;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         arFragment.setOnTapArPlaneListener(((hitResult, plane, motionEvent) -> {
             createModel(hitResult.createAnchor(), arFragment);
         }));
+
+        pepperSpeech = new PepperSpeech(getApplicationContext());
     }
 
     private void createModel(Anchor anchor, ArFragment arFragment) {
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         modelAnimator = new ModelAnimator(animationData, modelRenderable);
         modelAnimator.start();
+
+        // sample usage of PepperSpeech
+        pepperSpeech.sayWelcome();
         i++;
     }
 
