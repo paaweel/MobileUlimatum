@@ -59,11 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void animateModel(ModelRenderable modelRenderable) {
+    private void stopAllAnimations(){
         if (modelAnimator != null && modelAnimator.isRunning()) {
             modelAnimator.end();
         }
+    }
 
+    private void animateModel(ModelRenderable modelRenderable) {
+        stopAllAnimations();
         int animationCount = modelRenderable.getAnimationDataCount();
 
         if (i == animationCount)
@@ -74,6 +77,27 @@ public class MainActivity extends AppCompatActivity {
         modelAnimator = new ModelAnimator(animationData, modelRenderable);
         modelAnimator.start();
         i++;
+    }
+
+    private void nodHead(ModelRenderable modelRenderable){
+        stopAllAnimations();
+        AnimationData animationData = modelRenderable.getAnimationData(4);
+        modelAnimator = new ModelAnimator(animationData, modelRenderable);
+        modelAnimator.start();
+    }
+
+    private void shakeHead(ModelRenderable modelRenderable){
+        stopAllAnimations();
+        AnimationData animationData = modelRenderable.getAnimationData(5);
+        modelAnimator = new ModelAnimator(animationData, modelRenderable);
+        modelAnimator.start();
+    }
+
+    private void waveHand(ModelRenderable modelRenderable){
+        stopAllAnimations();
+        AnimationData animationData = modelRenderable.getAnimationData(10);
+        modelAnimator = new ModelAnimator(animationData, modelRenderable);
+        modelAnimator.start();
     }
 
     @Override
