@@ -24,9 +24,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private ModelAnimator modelAnimator;
     private int i = 0;
     private PepperSpeech pepperSpeech;
+    private PepperMotion pepperMotion;
 
 
     @Override
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         pepperSpeech = new PepperSpeech(getApplicationContext());
+        pepperMotion = new PepperMotion();
     }
 
     private void createModel(Anchor anchor, ArFragment arFragment) {
@@ -63,48 +64,43 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void stopAllAnimations(){
-        if (modelAnimator != null && modelAnimator.isRunning()) {
-            modelAnimator.end();
-        }
-    }
-
     private void animateModel(ModelRenderable modelRenderable) {
-        stopAllAnimations();
-        int animationCount = modelRenderable.getAnimationDataCount();
-
-        if (i == animationCount)
-            i = 0;
-
-        AnimationData animationData = modelRenderable.getAnimationData(i);
-
-        modelAnimator = new ModelAnimator(animationData, modelRenderable);
-        modelAnimator.start();
-
-        // sample usage of PepperSpeech
-        pepperSpeech.sayWelcome();
+        switch(i){
+            case 0:
+                pepperSpeech.saySuper();
+                break;
+            case 1:
+                pepperSpeech.sayOhNo();
+                break;
+            case 2:
+                pepperMotion.waveHand(modelRenderable);
+                break;
+            case 3:
+                pepperMotion.shakeHead(modelRenderable);
+                pepperSpeech.sayDontAccept();
+                break;
+            case 4:
+                pepperMotion.nodHead(modelRenderable);
+                pepperSpeech.sayAccept();
+                break;
+            case 5:
+                pepperMotion.shakeHead(modelRenderable);
+                //"I don't understand, can you repeat?" recording is missing
+                break;
+            case 6:
+                pepperSpeech.sayWelcome();
+                break;
+            case 7:
+                pepperMotion.nodHead(modelRenderable);
+                break;
+            case 8:
+                pepperSpeech.sayThanks();
+                break;
+        }
         i++;
-    }
-
-    private void nodHead(ModelRenderable modelRenderable){
-        stopAllAnimations();
-        AnimationData animationData = modelRenderable.getAnimationData(4);
-        modelAnimator = new ModelAnimator(animationData, modelRenderable);
-        modelAnimator.start();
-    }
-
-    private void shakeHead(ModelRenderable modelRenderable){
-        stopAllAnimations();
-        AnimationData animationData = modelRenderable.getAnimationData(5);
-        modelAnimator = new ModelAnimator(animationData, modelRenderable);
-        modelAnimator.start();
-    }
-
-    private void waveHand(ModelRenderable modelRenderable){
-        stopAllAnimations();
-        AnimationData animationData = modelRenderable.getAnimationData(10);
-        modelAnimator = new ModelAnimator(animationData, modelRenderable);
-        modelAnimator.start();
+        if(i==9){
+            i = 0;
+        }
     }
 
     @Override
