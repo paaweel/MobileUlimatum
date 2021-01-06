@@ -32,13 +32,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private int i = 0;
+    private int i = 0; // todo: remove or at least rename
     private PepperSpeech pepperSpeech;
     private PepperMotion pepperMotion;
 
     public static final Integer RecordAudioRequestCode = 1;
-    private ModelAnimator modelAnimator;
-    private int i = 0;
     private SpeechRecognizer speechRecognizer;
     private EditText editText;
     private Button micButton;
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         editText = findViewById(R.id.speechTextView);
+        editText.setText("Hold mic to speak...");
         micButton = findViewById(R.id.micBtn);
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
