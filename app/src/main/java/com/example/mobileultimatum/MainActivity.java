@@ -32,13 +32,16 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private int i = 0;
+    private PepperSpeech pepperSpeech;
+    private PepperMotion pepperMotion;
+
     public static final Integer RecordAudioRequestCode = 1;
     private ModelAnimator modelAnimator;
     private int i = 0;
     private SpeechRecognizer speechRecognizer;
     private EditText editText;
     private Button micButton;
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -138,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
         arFragment.setOnTapArPlaneListener(((hitResult, plane, motionEvent) -> {
             createModel(hitResult.createAnchor(), arFragment);
         }));
+
+        pepperSpeech = new PepperSpeech(getApplicationContext());
+        pepperMotion = new PepperMotion();
     }
 
     @Override
@@ -175,20 +181,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void animateModel(ModelRenderable modelRenderable) {
-        if (modelAnimator != null && modelAnimator.isRunning()) {
-            modelAnimator.end();
+        switch(i){
+            case 0:
+                pepperSpeech.saySuper();
+                break;
+            case 1:
+                pepperSpeech.sayOhNo();
+                break;
+            case 2:
+                pepperMotion.waveHand(modelRenderable);
+                break;
+            case 3:
+                pepperMotion.shakeHead(modelRenderable);
+                pepperSpeech.sayDontAccept();
+                break;
+            case 4:
+                pepperMotion.nodHead(modelRenderable);
+                pepperSpeech.sayAccept();
+                break;
+            case 5:
+                pepperMotion.shakeHead(modelRenderable);
+                //"I don't understand, can you repeat?" recording is missing
+                break;
+            case 6:
+                pepperSpeech.sayWelcome();
+                break;
+            case 7:
+                pepperMotion.nodHead(modelRenderable);
+                break;
+            case 8:
+                pepperSpeech.sayThanks();
+                break;
         }
-
-        int animationCount = modelRenderable.getAnimationDataCount();
-
-        if (i == animationCount)
-            i = 0;
-
-        AnimationData animationData = modelRenderable.getAnimationData(i);
-
-        modelAnimator = new ModelAnimator(animationData, modelRenderable);
-        modelAnimator.start();
         i++;
+        if(i==9){
+            i = 0;
+        }
     }
 
     @Override
