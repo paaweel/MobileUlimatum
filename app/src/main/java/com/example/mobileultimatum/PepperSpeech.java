@@ -1,46 +1,37 @@
 package com.example.mobileultimatum;
 
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import java.util.Locale;
+import android.os.Build;
 
 public class PepperSpeech {
-    private MediaPlayer mediaPlayer;
-    private Context context;
+
+    private TextToSpeech textToSpeechEngine;
+
+    OnInitListener onInit = new OnInitListener() {
+        @Override
+        public void onInit(int status) {
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeechEngine.setLanguage(new Locale("pl-PL")) ;
+            }
+        }
+    };
 
     PepperSpeech(Context appContext){
-        context = appContext;
-        mediaPlayer = MediaPlayer.create(appContext, R.raw.czesc);
+        textToSpeechEngine = new TextToSpeech(appContext, onInit);
     }
 
-    private void playSound(int resource) {
-        if (mediaPlayer.isPlaying()){
-            this.stopPlaying();
+    public void sayWords(@Phrases.PhrasesDef String text){
+        if (text.length() > 0 ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                textToSpeechEngine.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+            } else {
+                textToSpeechEngine.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+            }
         }
-        mediaPlayer = MediaPlayer.create(context, resource);
-
-        mediaPlayer.start();
     }
-
-    private void stopPlaying() {
-        mediaPlayer.stop();
-        mediaPlayer.release();
-        mediaPlayer = null;
-    }
-
-    public void saySuper(){
-        this.playSound(R.raw.superowo);
-    }
-    public void sayOhNo(){
-        this.playSound(R.raw.onie);
-    }
-    public void sayDontAccept(){ this.playSound(R.raw.nieakceptuje); }
-    public void sayAccept(){
-        this.playSound(R.raw.akceptuje);
-    }
-    public void sayWelcome(){
-        this.playSound(R.raw.czesc);
-    }
-    public void sayThanks(){ this.playSound(R.raw.dziekuje); }
 
 }
 

@@ -67,34 +67,36 @@ public class MainActivity extends AppCompatActivity {
     private void animateModel(ModelRenderable modelRenderable) {
         switch(i){
             case 0:
-                pepperSpeech.saySuper();
+                pepperSpeech.sayWords(Phrases.SUPER);
                 break;
             case 1:
-                pepperSpeech.sayOhNo();
+                pepperSpeech.sayWords(Phrases.OHNO);
+
                 break;
             case 2:
                 pepperMotion.waveHand(modelRenderable);
                 break;
             case 3:
                 pepperMotion.shakeHead(modelRenderable);
-                pepperSpeech.sayDontAccept();
+                pepperSpeech.sayWords(Phrases.NOT_ACCEPT);
                 break;
             case 4:
                 pepperMotion.nodHead(modelRenderable);
-                pepperSpeech.sayAccept();
+                pepperSpeech.sayWords(Phrases.ACCEPT);
                 break;
             case 5:
                 pepperMotion.shakeHead(modelRenderable);
-                //"I don't understand, can you repeat?" recording is missing
+                pepperSpeech.sayWords(Phrases.CANNOT_UNDERSTAND);
                 break;
             case 6:
-                pepperSpeech.sayWelcome();
+                pepperSpeech.sayWords(Phrases.HELLO);
+
                 break;
             case 7:
                 pepperMotion.nodHead(modelRenderable);
                 break;
             case 8:
-                pepperSpeech.sayThanks();
+                pepperSpeech.sayWords(Phrases.THANKS);
                 break;
         }
         i++;
