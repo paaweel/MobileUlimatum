@@ -23,8 +23,6 @@ import androidx.core.content.ContextCompat;
 import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.SkeletonNode;
-import com.google.ar.sceneform.animation.ModelAnimator;
-import com.google.ar.sceneform.rendering.AnimationData;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int i = 0; // todo: remove or at least rename
     private PepperSpeech pepperSpeech;
     private PepperMotion pepperMotion;
+    private ModelRenderable modelRenderable;
 
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
@@ -104,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 System.out.println(data);
                 editText.setText(data.get(0));
+                react(data.get(0));
             }
 
             @Override
@@ -162,15 +162,16 @@ public class MainActivity extends AppCompatActivity {
                 .builder()
                 .setSource(this, R.raw.raw)
                 .build()
-                .thenAccept(modelRenderable -> {
+                .thenAccept(mr -> {
 
                     AnchorNode anchorNode = new AnchorNode(anchor);
 
                     SkeletonNode skeletonNode = new SkeletonNode();
                     skeletonNode.setParent(anchorNode);
-                    skeletonNode.setRenderable(modelRenderable);
+                    skeletonNode.setRenderable(mr);
 
                     arFragment.getArSceneView().getScene().addChild(anchorNode);
+                    modelRenderable = mr;
 
                     // button has been removed
                     // code kept for reference, delete once animations are properly handled
@@ -179,44 +180,40 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void animateModel(ModelRenderable modelRenderable) {
-        switch(i){
-            case 0:
+    private void react(String text) {
+        String preprocessed = text.toLowerCase();
+        switch(preprocessed){
+            case "i agree":
                 pepperSpeech.sayWords(Phrases.SUPER);
                 break;
-            case 1:
-                pepperSpeech.sayWords(Phrases.OHNO);
 
+            case "i do not agree":
+                pepperSpeech.sayWords(Phrases.OHNO);
                 break;
-            case 2:
+
+            case "hi":
+            case "hello":
                 pepperMotion.waveHand(modelRenderable);
+                pepperSpeech.sayWords(Phrases.HELLO);
                 break;
-            case 3:
+
+            case "4":
                 pepperMotion.shakeHead(modelRenderable);
                 pepperSpeech.sayWords(Phrases.NOT_ACCEPT);
                 break;
-            case 4:
+
+            case "6":
                 pepperMotion.nodHead(modelRenderable);
                 pepperSpeech.sayWords(Phrases.ACCEPT);
                 break;
-            case 5:
-                pepperMotion.shakeHead(modelRenderable);
-                pepperSpeech.sayWords(Phrases.CANNOT_UNDERSTAND);
-                break;
-            case 6:
-                pepperSpeech.sayWords(Phrases.HELLO);
 
-                break;
-            case 7:
-                pepperMotion.nodHead(modelRenderable);
-                break;
-            case 8:
+            case "done":
                 pepperSpeech.sayWords(Phrases.THANKS);
                 break;
-        }
-        i++;
-        if(i==9){
-            i = 0;
+
+            default:
+                pepperMotion.shakeHead(modelRenderable);
+                pepperSpeech.sayWords(Phrases.CANNOT_UNDERSTAND);
         }
     }
 
