@@ -149,6 +149,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         speechRecognizer.destroy();
+        pepperSpeech.shutdown();
+    }
+
+    @Override
+    protected void onPause() {
+        pepperSpeech.stop();
+        super.onPause();
     }
 
     private void checkPermission() {

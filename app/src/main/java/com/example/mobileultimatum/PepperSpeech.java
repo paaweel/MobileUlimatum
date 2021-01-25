@@ -33,5 +33,12 @@ public class PepperSpeech {
         }
     }
 
+    public void shutdown(){
+        textToSpeechEngine.stop();
+    }
+    public void stop(){
+        textToSpeechEngine.shutdown();
+    }
+
 }
 
